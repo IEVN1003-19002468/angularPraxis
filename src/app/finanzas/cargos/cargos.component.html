@@ -1,0 +1,155 @@
+<app-nav-bar-menu></app-nav-bar-menu><br>
+<h1 class="text-13xl text-left font-bold text-gray-800 mb-8 ps-2 ml-5">Administracion de cargos</h1>
+<hr>
+<div class="m-5 shadow-lg">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-left ml-5">Busca cliente por nombre</h2>
+    <div class="flex items-center m-4 mb-2 shadow-lg">
+        <form [formGroup]="formBusca">
+
+
+        
+        <input
+          type="text"
+          placeholder="Buscar cliente o descripción" formControlName="nombre" name="nombre"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          class="ml-2 px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600" (click)="buscaCliente()"
+        >
+          Buscar
+        </button>
+    </form>
+      </div>
+      <br>
+</div>
+<div class="m-5 shadow-md" *ngIf="resultado">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full " >
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-left ml-5">Cargos del cliente</h2>
+        <button type="button" (click)="abreModalRegistro()"
+                            class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Agregar cargo +</button>
+
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Cliente</th>
+                    <th scope="col" class="px-6 py-3">Descripcion cargo</th>
+                    <th scope="col" class="px-6 py-3">Monto cargo</th>
+                    <th scope="col" class="px-6 py-3">Saldo cargo</th>
+                    <th scope="col" class="px-6 py-3">Fecha vencimiento cargo</th>
+
+                    <th scope="col" class="px-6 py-3">Accion</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let cargo of cliente">
+                <tr class="odd:bg-white odd:dark:bg-gray-200 even:bg-gray-50 text-gray-900" >
+                    <th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap">
+                        {{cargo.nombre}}
+                    </th>
+                    <td class="px-6 py-4">{{cargo.descripcion}}</td>
+                    <td class="px-6 py-4">${{cargo.monto_cargo}}</td>
+                    <td class="px-6 py-4">${{cargo.saldo_cargo}}</td>
+                    <td class="px-6 py-4">2024-11-31</td>
+                    <td class="px-6 py-4">
+                        <button type="button"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modificar</button>
+
+
+                        <button type="button" (click)="realizaPago()"
+                            class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
+                            Pagar</button>
+                        <button type="button"
+                            class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Cancelar</button>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> 
+<div id="registra" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="registra">
+    <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-bold mb-4 text-center">Registra cargo</h2>
+
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            *ngIf="registra">
+            <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+                <h2 class="text-xl font-bold mb-4 text-center">Registra Cargo</h2>
+                <form [formGroup]="formRegistro">
+                    
+                    
+                    <div>
+                      <label for="descripcion" class="block font-semibold">Id Cliente:</label>
+                      <input id="descripcion" type="text"  formControlName="idCliente" value="cliente.idCliente" 
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="idCliente" />
+                    </div>
+                    <div>
+                      <label for="descripcion" class="block font-semibold">Descripcion cargo:</label>
+                      <input id="descripcion" type="text"  formControlName="descripcion" placeholder="Licenciamiento 2025"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="descripcion" />
+                    </div>
+                    <div>
+                      <label for="cargo" class="block font-semibold">Monto cargo:</label>
+                      <input id="cargo" type="number" formControlName="cargo" placeholder="Ej. 2500"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="cargo" />
+                    </div>
+                    <div>
+                      <label for="fechaV" class="block font-semibold">Fecha Vencimiento:</label>
+                      <input id="fechaV" type="date" formControlName="fechaV"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="fechaV" />
+                    </div>
+                <br><br>
+                <button type="button" (click)="cierraModal()"
+                    class="text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-blue-800">Cancelar</button>
+                <button type="button" (click)="registraCargo()"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">Registrar</button>
+
+</form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="registra" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="pago">
+    <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-bold mb-4 text-center">Registra Pago</h2>
+
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            *ngIf="pago">
+            <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+                <h2 class="text-xl font-bold mb-4 text-center">Registra Pago</h2>
+                <form [formGroup]="formRegistro">
+                    
+                    
+                    <div>
+                      <label for="descripcion" class="block font-semibold">Id Cliente:</label>
+                      <input id="descripcion" type="text"  formControlName="idCliente" value="cliente.idCliente" 
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="idCliente" />
+                    </div>
+                    <div>
+                      <label for="descripcion" class="block font-semibold">Metodo de pago:</label>
+                      
+                        <select name="" id=""  class="w-full border border-gray-300 rounded p-2 text-black" >
+                            <option value="">Tarjeta de Credito</option>
+                            <option value="">Tarjeta de Debito</option>
+                            <option value="">Efectivo</option>
+                            <option value="">Trasnferencia</option>
+                        </select>
+                    </div>
+                    <div>
+                      <label for="cargo" class="block font-semibold">Monto pago:</label>
+                      <input id="cargo" type="number" formControlName="cargo" placeholder="Ej. 2500"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="cargo" />
+                    </div>
+                    
+                <br><br>
+                <button type="button" (click)="cierraModal()"
+                    class="text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-blue-800">Cancelar</button>
+                <button type="button" (click)="registraCargo()"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">Registrar</button>
+
+</form>
+            </div>
+        </div>
+
+    </div>
+</div>

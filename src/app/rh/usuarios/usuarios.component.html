@@ -1,0 +1,170 @@
+
+<app-nav-bar-menu></app-nav-bar-menu><br>
+<h1 class="text-13xl text-left font-bold text-gray-800 mb-8 ps-2 ml-5">Gestión de usuarios</h1>
+<hr>
+
+<div class="flex justify-end mb-4">
+    <button
+        type="button" (click)="registraUsuario()"
+        
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Nuevo +
+    </button>
+</div>
+
+<div class="flex justify-start ml-5 space-x-4">
+    <!-- Tabla 1 -->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full md:w-1/2">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-left ml-5">Directorio de usuarios</h2>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Nickname</th>
+                    <th scope="col" class="px-6 py-3">Nombre usuario</th>
+                    <!-- <th scope="col" class="px-6 py-3">Empresa</th> -->
+                    <th scope="col" class="px-6 py-3">Perfil</th>
+                    <th scope="col" class="px-6 py-3">Estatus</th>
+                    <th scope="col" class="px-6 py-3">Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd:bg-white odd:dark:bg-gray-200 even:bg-gray-50"
+                    *ngFor="let usuarioData of usuarios">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{usuarioData.nickname}}
+                    </th>
+                    <td class="px-6 py-4">{{usuarioData.nombreUsuario}}</td>
+                    <!-- <td class="px-6 py-4"></td> -->
+                    <td class="px-6 py-4">{{usuarioData.rol}}</td>
+                    <td class="px-6 py-4">{{usuarioData.estatusUsuario}}</td>
+                    <td class="px-6 py-4">
+                        <button type="button" 
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" (click)="editaUsuario(usuarioData.id,usuarioData.nombreUsuario,usuarioData.rol,usuarioData.estatus)">Administrar</button>
+                        
+                     </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    
+</div>
+
+
+<div>
+<p>
+
+</p>
+</div>
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="modalEdit">
+    <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-bold mb-4 text-center">Editar Pedido</h2>
+
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            *ngIf="modalEdit">
+            <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+                <h2 class="text-xl font-bold mb-4 text-center">Actualiza usuario</h2>
+                <form [formGroup]="formEdita">
+                    <!-- ID de la Venta -->
+                    <div>
+                      
+                      <input id="id_venta" type="text" formControlName="idUsuario"
+                        class="w-full border border-gray-300 rounded p-2 text-black hidden"  name="idUsuario" readonly/>
+                    </div>
+                    <div>
+                      <label for="nombreCliente" class="block font-semibold">Nombre usuario:</label>
+                      <input id="nombreCliente" type="text" formControlName="nombre"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="nombre" />
+                    </div>
+                    <div>
+                      <label for="licencias" class="block font-semibold">Password:</label>
+                      <input id="licencias" type="text" formControlName="pass"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="pass" />
+                    </div>
+                    <div>
+                      <label for="licencias" class="block font-semibold">Perfil:</label>
+                     
+                        <select name="" id="" formControlName="rol" name="rol" class="w-full border border-gray-300 rounded p-2 text-black">
+                            <option value="Profesor">Profesor</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Finanzas">Finanzas</option>
+                      
+                        </select>
+                    </div>
+                    <div>
+                      <label for="licencias" class="block font-semibold">Estatus:</label>
+                     
+                        <select name="" id="" formControlName="estatus" name="estatus" class="w-full border border-gray-300 rounded p-2 text-black">
+                            <option value=1>Activo</option>
+                            <option value=0>Inactivo</option>
+                            
+                      
+                        </select>
+                    </div>
+                </form>
+                <br><br>
+                <button type="button" (click)="cierraModal()"
+                    class="text-white bg-green-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-blue-800">Cancelar</button>
+                <button type="button" (click)="actualizaUsuario()"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">Actualizar</button>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="modalRegistra">
+    <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-bold mb-4 text-center">Editar Pedido</h2>
+
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        *ngIf="modalRegistra">
+            <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+                <h2 class="text-xl font-bold mb-4 text-center">Registra un nuevo usuario</h2>
+                <form [formGroup]="formRegistro">
+                    
+                    <div>
+                      <label for="nombreCliente" class="block font-semibold">Nickname:</label>
+                      <input id="nombreCliente" type="text" formControlName="nickname"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="nickname" />
+                    </div>
+                    <div>
+                      <label for="nombreCliente" class="block font-semibold">Nombre usuario:</label>
+                      <input id="nombreCliente" type="text" formControlName="nombre"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="nombre" />
+                    </div>
+                    <div>
+                      <label for="nombreCliente" class="block font-semibold">E-mail:</label>
+                      <input id="nombreCliente" type="text" formControlName="email"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="email" />
+                    </div>
+                    <div>
+                      <label for="licencias" class="block font-semibold">Password:</label>
+                      <input id="licencias" type="text" formControlName="pass"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="pass" />
+                    </div>
+                    <div>
+                      <label for="licencias" class="block font-semibold">Perfil:</label>
+                     
+                        <select name="" id="" formControlName="rol" name="rol" class="w-full border border-gray-300 rounded p-2 text-black">
+                            <option value="Profesor">Profesor</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Finanzas">Finanzas</option>
+                      
+                        </select>
+                    </div>
+                    
+                </form>
+                <br><br>
+                <button type="button" (click)="cierraModal()"
+                    class="text-white bg-green-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-blue-800">Cancelar</button>
+                <button type="button" (click)="terminaRegistro()"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">Actualizar</button>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>

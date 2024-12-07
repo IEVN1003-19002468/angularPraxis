@@ -1,0 +1,245 @@
+<app-nav-bar-menu></app-nav-bar-menu>
+
+<div class="p-6" *ngIf="grupoGrupos">
+
+    <h1 class="text-3xl font-bold mb-4 p-6 ">Mis grupos</h1>
+    <hr>
+
+    <!-- Botones de acciones -->
+    <div class="flex justify-end gap-4 mb-4">
+        <button id="btnInscribe" class="hidden bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+            onclick="inscribir()" data-bs-toggle="modal" data-bs-target="#modal-inscripcion">
+            Inscribir Alumno
+        </button>
+        <button id="btnRegresa" class="hidden bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition"
+            onclick="regresar()">
+            Regresar
+        </button>
+        <button id="btnCrea" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+            data-bs-toggle="modal" data-bs-target="#modal-crear-grupo">
+            Crear
+        </button>
+    </div>
+
+
+    <div id="misGrupos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Iteración para cada tarjeta de grupo -->
+        <div class="bg-white shadow rounded-lg p-6" *ngFor="let grupo of gruposData">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-gray-200 rounded-full mb-4 flex items-center justify-center text-xl font-bold">
+                    W
+                </div>
+                <h3 class="font-bold text-lg mb-2">Grupo: {{ grupo.nombreGrupo }}</h3>
+                <p class="text-sm text-gray-500 mb-3">Creado en: {{ grupo.fechaCreacion }}</p>
+                <span class="bg-green-100 text-green-600 text-sm px-3 py-1 rounded-full">En curso</span>
+            </div>
+            <div class="mt-4 flex justify-center">
+                <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                    (click)="dameGrupoInfo(grupo.id)">
+
+                    Ver más
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="modal-crear-grupo" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6">
+            <h2 class="text-xl font-bold mb-4">Crear Grupo</h2>
+            <form id="formCrearGrupo" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nombre del Grupo</label>
+                    <input type="text" name="nombreGrupo"
+                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Cupo</label>
+                        <input type="number" name="cupoGrupo"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Visibilidad</label>
+                        <select name="visibilidadGrupo"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="privado">Privado</option>
+                            <option value="publico">Público</option>
+                            <option value="oculto">Oculto</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Fecha de Inicio</label>
+                        <input type="date" name="fechaInicio"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Fecha de Fin</label>
+                        <input type="date" name="fechaFin"
+                            class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Descripción</label>
+                    <textarea name="descripcionGrupo"
+                        class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        rows="3"></textarea>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button"
+                        class="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400 transition"
+                        onclick="cerrarModal('modal-crear-grupo')">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                        Crear Grupo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div *ngIf="muestraGrupo">
+    <br>
+
+    <div class="flex justify-end gap-4 mb-4">
+        <button class="mr-5 bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 transition">
+            Regresar
+        </button>
+    </div>
+    <hr>
+    <div class="flex flex-col space-y-8 shadow-md m-2">
+        
+    
+        
+            <div class="p-6 bg-white shadow rounded-lg">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Detalle del grupo NOMBREDELGRUPO</h2>
+                <div class="grid grid-cols-2 gap-8">
+                  <!-- Columna Izquierda -->
+                  <div>
+                    <h2 class="text-lg font-semibold mb-4">Información del Grupo</h2>
+                    <div class="mb-2">
+                      <p class="font-medium">Nombre del Grupo:</p>
+                      <p>Matemáticas Avanzadas</p>
+                    </div>
+                    <div class="mb-2">
+                      <p class="font-medium">Estatus:</p>
+                      <p>Activo</p>
+                    </div>
+                    <div class="mb-2">
+                      <p class="font-medium">Código del Grupo:</p>
+                      <p>GRP12345</p>
+                    </div>
+                  </div>
+              
+                  <!-- Columna Derecha -->
+                  <div>
+                    <h2 class="text-lg font-semibold mb-4">Información del Profesor</h2>
+                    <div class="mb-2">
+                      <p class="font-medium">Nombre del Profesor:</p>
+                      <p>Juan Pérez López</p>
+                    </div>
+                    <div class="mb-2">
+                      <p class="font-medium">Correo Electrónico:</p>
+                      <p>juan.perezejemplo.com</p>
+                    </div>
+                    <div class="mb-2">
+                      <p class="font-medium">Teléfono:</p>
+                      <p>555-123-4567</p>
+                    </div>
+                  </div>
+                </div>
+                
+              
+            
+        
+    </div>
+    <div class="flex flex-col space-y-8 shadow m-2">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Estadisticas del grupo NOMBREDELGRUPO</h2>
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 ml-5 text-left">Porcentaje de puntaje por alumno</h2>
+        <div class="flex justify-center items-center space-x-8">
+            
+            <ngx-charts-pie-chart [view]="view" scheme="fire" [results]="single" [gradient]="gradient"
+                [legend]="showLegend" [labels]="showLabels" [doughnut]="isDoughnut" (select)="onSelect($event)"
+                (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+            </ngx-charts-pie-chart>
+            <ngx-charts-pie-grid [view]="view" scheme="fire" [results]="single" (select)="onSelect($event)">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+    <div class="flex flex-col space-y-8 shadow m-2">
+        <div class="relative overflow-x-auto shadow sm:rounded-lg w-full md:w-1/2 mr-5">
+            <br>
+            <div class="flex justify-end gap-4 mb-4">
+                <button class="mr-5 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                    Inscribir alumno
+                </button>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-left ml-5">Alumnos inscritos</h2>
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" >
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Matricula</th>
+                        <th scope="col" class="px-6 py-3">Nombre</th>
+                        <th scope="col" class="px-6 py-3">Aciertos</th>
+                        <th scope="col" class="px-6 py-3">Errores</th>
+                        <th scope="col" class="px-6 py-3">Tiempo</th>
+                        <th scope="col" class="px-6 py-3">Puntaje</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-white odd:dark:bg-gray-200 even:bg-gray-50" >
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            19002468
+                        </th>
+                        <td class="px-6 py-4">ANTONIO PONCE PEREZ</td>
+                        <td class="px-6 py-4">19</td>
+                        <td class="px-6 py-4">1</td>
+                        <td class="px-6 py-4">1:30</td>
+                        <td class="px-6 py-4">125</td>
+                        
+                        
+                    </tr>
+                    <tr class="odd:bg-grey odd:dark:bg-gray-200 even:bg-gray-50" >
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            19002469
+                        </th>
+                        <td class="px-6 py-4">JUAN PONCE PEREZ</td>
+                        <td class="px-6 py-4">19</td>
+                        <td class="px-6 py-4">1</td>
+                        <td class="px-6 py-4">1:30</td>
+                        <td class="px-6 py-4">125</td>
+                        
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+
+    function cerrarModal(modalId) {
+        document.getElementById(modalId)?.classList.add('hidden');
+    }
+
+    function inscribir() {
+        console.log('Inscribir Alumno');
+    }
+
+    function regresar() {
+        document.getElementById('misGrupos').style.display = 'block';
+        document.getElementById('btnCrea').classList.remove('hidden');
+        document.getElementById('btnRegresa').classList.add('hidden');
+        document.getElementById('btnInscribe').classList.add('hidden');
+    }
+
+    function verMas(grupoId) {
+        console.log(`Mostrar detalles del grupo con ID: ${grupoId}`);
+    }
+</script>

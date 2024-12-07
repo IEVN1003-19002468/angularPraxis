@@ -1,0 +1,209 @@
+<app-nav-bar-menu></app-nav-bar-menu>
+<h1 class="text-13xl text-center font-bold text-gray-800 mb-8 ps-2">Análisis de Ventas Praxis</h1>
+
+<div class="flex flex-col space-y-8">
+    <!-- Contenedor de gráficos -->
+    <div class="flex flex-col space-y-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Ingreso por colegios</h2>
+        <div class="flex justify-center items-center space-x-8">
+            <ngx-charts-pie-chart [view]="view" scheme="fire" [results]="ventas" [gradient]="gradient"
+                [legend]="showLegend" [labels]="showLabels" [doughnut]="isDoughnut" (select)="onSelect($event)"
+                (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+            </ngx-charts-pie-chart>
+            <ngx-charts-pie-grid [view]="view" scheme="fire" [results]="ventas" (select)="onSelect($event)">
+            </ngx-charts-pie-grid>
+        </div>
+    </div>
+
+    
+    <div class="flex justify-end mb-4">
+        <button
+            type="button"
+            (click)="registraNuevoCliente()"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Nuevo +
+        </button>
+    </div>
+    
+    <div class="flex justify-start ml-5 space-x-4">
+        <!-- Tabla 1 -->
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full md:w-1/2">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-left ml-5">Licencias activas por colegio</h2>
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Cliente</th>
+                        <th scope="col" class="px-6 py-3">Licencias</th>
+                        <th scope="col" class="px-6 py-3">Estatus</th>
+                        <th scope="col" class="px-6 py-3">Precio</th>
+                        <th scope="col" class="px-6 py-3">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-white odd:dark:bg-gray-200 even:bg-gray-50"
+                        *ngFor="let licenciaData of licencias">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{licenciaData.cliente}}
+                        </th>
+                        <td class="px-6 py-4">{{licenciaData.noLicencias}}</td>
+                        <td class="px-6 py-4">{{licenciaData.estatus}}</td>
+                        <td class="px-6 py-4">$50</td>
+                        <td class="px-6 py-4">
+                            <button type="button" (click)="muestraEditar(licenciaData.ClienteId,licenciaData.cliente,licenciaData.noLicencias)"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Administrar</button>
+                            
+                            <button type="button" (click)="muestraBorrar(licenciaData.ClienteId,licenciaData.cliente)" *ngIf="licenciaData.estatus === 'ACTIVO'"
+                                class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Inactivar</button>
+                            
+                            <button type="button" (click)="muestraActivar(licenciaData.ClienteId,licenciaData.cliente)" *ngIf="licenciaData.estatus === 'INACTIVO'"
+                                class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800"> Activar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Tabla 2 -->
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full md:w-1/2 mr-5">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-left ml-5">Colegios registrados</h2>
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" >
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Cliente</th>
+                        <th scope="col" class="px-6 py-3">Estatus</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd:bg-white odd:dark:bg-gray-200 even:bg-gray-50" *ngFor="let clienteData of clientesT">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{clienteData.cliente}}
+                        </th>
+                        <td class="px-6 py-4">{{clienteData.estatus}}</td>
+                        
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="edita">
+    <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-bold mb-4 text-center">Editar Pedido</h2>
+
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            *ngIf="edita">
+            <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+                <h2 class="text-xl font-bold mb-4 text-center">Editar Pedido</h2>
+                <form [formGroup]="formEdita">
+                    <!-- ID de la Venta -->
+                    <div>
+                      <label for="id_venta" class="block font-semibold">ID Venta:</label>
+                      <input id="id_venta" type="text" formControlName="idCliente"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="idCliente" readonly/>
+                    </div>
+                    <div>
+                      <label for="nombreCliente" class="block font-semibold">Nombre Cliente:</label>
+                      <input id="nombreCliente" type="text" formControlName="nombre"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="nombre" />
+                    </div>
+                    <div>
+                      <label for="licencias" class="block font-semibold">Numero de licencias:</label>
+                      <input id="licencias" type="text" formControlName="licencias"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="licencias" />
+                    </div>
+                </form>
+                <br><br>
+                <button type="button" (click)="cierraModal()"
+                    class="text-white bg-green-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-blue-800">Cancelar</button>
+                <button type="button" (click)="actualizaCliente()"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">Actualizar</button>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="borra">
+    <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-bold mb-4 text-center">Editar Pedido</h2>
+
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            *ngIf="borra">
+            <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+                <h2 class="text-xl font-bold mb-4 text-center">¿Deseas inactivar el siguiente colegio?</h2>
+                <form [formGroup]="formElimina">
+                    <div>
+                        <label for="Email" class="block font-semibold">ID COLEGIO:</label>
+                        <input id="Email" type="text"  formControlName="idColegio"
+                          class="w-full border border-gray-300 rounded p-2 text-black"  name="idColegio" [disabled]="isDisabled" readonly/>
+                      </div>
+                    <div>
+                      <label for="nombreCliente" class="block font-semibold">Nombre Cliente:</label>
+                      <input id="nombreCliente" type="text" formControlName="nombre"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="nombre" [disabled]="isDisabled" readonly/>
+                    </div>
+                    <br><br>
+                <button type="button" (click)="cierraModal()"
+                    class="text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-blue-800">Cancelar</button>
+                <button type="button" (click)="inactivaColegio()" 
+                    class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Inactivar</button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="registra" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" *ngIf="registra">
+    <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-bold mb-4 text-center">Registra Cliente</h2>
+
+        <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            *ngIf="registra">
+            <div class="bg-white p-8 md:p-12 lg:p-16 rounded-lg shadow-lg w-11/12 max-w-3xl max-h-[90vh] overflow-auto">
+                <h2 class="text-xl font-bold mb-4 text-center">Registra Cliente</h2>
+                <form [formGroup]="formRegistro">
+                    
+                    <div>
+                      <label for="nombreCliente" class="block font-semibold">Nombre Cliente:</label>
+                      <input id="nombreCliente" type="text" formControlName="nombre"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="nombreCliente" />
+                    </div>
+                    <div>
+                      <label for="Email" class="block font-semibold">Email:</label>
+                      <input id="Email" type="email"  formControlName="email"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="Email" />
+                    </div>
+                    <div>
+                      <label for="telefono" class="block font-semibold">Numero de telefono:</label>
+                      <input id="telefono" type="text" formControlName="telefono"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="telefono" />
+                    </div>
+                    <div>
+                      <label for="Direccion" class="block font-semibold">Direccion:</label>
+                      <input id="Direccion" type="text" formControlName="direccion"
+                        class="w-full border border-gray-300 rounded p-2 text-black"  name="Direccion" />
+                    </div>
+                <br><br>
+                <button type="button" (click)="cierraModal()"
+                    class="text-white bg-orange-700 hover:bg-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-blue-800">Cancelar</button>
+                <button type="button" (click)="registraDatos()"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">Registrar</button>
+
+</form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div>
+    <p>
+
+    </p>
+</div>

@@ -1,0 +1,48 @@
+<nav class="bg-slate-900 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <a href="#" class="text-white font-bold text-xl outline-none no-underline">PARADIGMA</a>
+        </div>
+        
+        <!-- Menu (Desktop) -->
+        <div class="hidden md:flex space-x-4">
+          <a href="#" class="text-white outline-none hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium no-underline">Inicio</a>
+          <a href="/admin" class="text-white outline-none hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium no-underline " >Administracion</a>
+          <a href="/users" class="text-white outline-none hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium no-underline " >Usuarios</a>
+          <a href="/cliente" class="text-white outline-none hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium no-underline " >Clientes</a>         
+          <a href="/cargos" class="text-white outline-none hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium no-underline ">Cargos</a>
+          <a href="/edoCta" class="text-white outline-none hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium no-underline ">Estado de cuenta</a>
+          <a href="#" class="text-white outline-none hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium no-underline " (click)="logOut()">Log Out</a>
+        </div>
+  
+        <!-- Botón para dispositivos móviles -->
+        <div class="md:hidden flex items-center">
+          <button id="menu-button" class="text-white hover:bg-blue-600 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Menu (Móvil) -->
+    <div id="mobile-menu" class="hidden md:hidden">
+      <a href="#" class="block text-white bg-blue-600 px-3 py-2 rounded-md text-base font-medium">Inicio</a>
+      <a href="#" class="block text-white hover:bg-blue-600 px-3 py-2 rounded-md text-base font-medium">Servicios</a>
+      <a href="#" class="block text-white hover:bg-blue-600 px-3 py-2 rounded-md text-base font-medium">Precios</a>
+      <a href="#" class="block text-white hover:bg-blue-600 px-3 py-2 rounded-md text-base font-medium">Log out</a>
+    </div>
+  </nav>
+  
+  <script>
+    // Toggle para el menú móvil
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+  
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
